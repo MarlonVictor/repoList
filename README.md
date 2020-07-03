@@ -15,8 +15,8 @@ A idéia da aplicação é poder salvar links de repositórios ao localStore par
 
 ## Resultado
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/62356988/86270343-7a0ca800-bba1-11ea-989b-90b50e5d83f6.gif" width="710">
-  <img src="https://user-images.githubusercontent.com/62356988/86270447-a0324800-bba1-11ea-8c4e-d95bb4983235.png" width="195">
+  <img src="https://user-images.githubusercontent.com/62356988/86270343-7a0ca800-bba1-11ea-989b-90b50e5d83f6.gif" width="660">
+  <img src="https://user-images.githubusercontent.com/62356988/86270447-a0324800-bba1-11ea-8c4e-d95bb4983235.png" width="180">
 </p>
 
 ## Como usar
