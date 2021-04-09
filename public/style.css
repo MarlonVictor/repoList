@@ -1,181 +1,250 @@
+/* global */
 :root {
-    --cor-principal: #7159C1;
-    --cor-secundaria: #f8f9fa;
+    --primary-color: #7159C1;
+    --secondary-color: #f2f2fa;
 }
+
 * {
     margin: 0;
     padding: 0;
+
     box-sizing: border-box;
 }
-body {   
-    background-color: var(--cor-principal);
-    display: flex;
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    transition:.3s;
 }
 
-span {
-    display: block;
-    margin-top: 20px;
-    text-align: center;
-    font: 700 14px verdana;
-    color: var(--cor-secundaria);
-}
-
-/* Left Side */
-#repo-form {
-    width: 40%;
-    padding: 100px;
-    color: var(--cor-secundaria);
-}
-
-#repo-form h1 {
-    width: 250px;
-    padding-bottom: 3px;
-    border-bottom: 3px solid #7A60D1;
-}
-
-#repo-form p {
-    margin-top: 8px;
-    filter: brightness(90%);
-    letter-spacing: 1.5px;
-    font-family: sans-serif;
-    font-size: 16px;
-}
-
-#repo-form .input {
-    display: flex;
-    margin: 15px 0;
-    background-color: #7A60D1;
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
     border-radius: 10px;
 }
 
-#repo-form .input i {
-    padding: 15px;
-}
-
-#repo-form .input input {
-    flex: 1;
-    margin-left: 10px;
-    background-color: #7A60D1;
-    color: var(--cor-secundaria);
-    border: none;
-    outline: none;
+::-webkit-scrollbar-track{
+    background: #DDD;
     border-radius: 10px;
-    font-size: 16px;
 }
 
-#repo-form .input input::placeholder {
-    color: var(--cor-secundaria);
-    filter: brightness(90%);
-    font-size: 14px;
-}
+body {
+    background: var(--secondary-color) url('https://image.flaticon.com/icons/svg/733/733553.svg') no-repeat 70% top;
+    font-family: 'Roboto';
 
-#repo-form button {
-    margin-top: 5px;
-    padding: 10px;
-    width: 100%;
-    background-color: var(--cor-principal);
-    border: 2px solid var(--cor-secundaria);
-    border-radius: 5px;
-    color: var(--cor-secundaria);
-    transition: .4s;
-    outline: none;
-}
-
-#repo-form button:hover {
-    border-color: #7A60D1;
-    color: #7A60D1;
-    background-color: #fff;
-    cursor: pointer;
-}
-
-/* Right Side*/
-#repo-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 50px 0;
-    width: 60%;
     min-height: 100vh;
-    border-radius: 20px 0 0 20px;
-    background-color: #fff;
-    list-style: none;
-    font-family: sans-serif;
+    overflow-x: hidden;
 }
 
-#repo-list li {
-    margin-top: 10px;
-    max-width: 670px;
-    width: 90%;
-    clear: both;
-    background-color: var(--cor-secundaria);
-    padding: 5px;
-    border-radius: 8px;
-    border: 1px solid rgba(113, 89, 193, 0.397);
+.overlay {
+    position: absolute;
+
+    width: 100vw;
+    height: 100vh;
+    padding: 40px 100px;
+
+    background: linear-gradient(0deg, rgba(242,242,250,0.9) 0%, rgba(242,242,250,0.7) 100%);
 }
 
-#repo-list img {
-    float: left;
-    margin-right: 20px;
-    width: 90px;
-    height: 100%;
-    border-radius: 8px;
+/* top container */
+
+header {
+    display: flex;
+    align-items: center;
 }
 
-#repo-list p {
-    text-indent: -1px;
-    font-size: 17px;
+header h3 {
+    padding-left: 10px;
+    font-weight: 400;
 }
 
-#repo-list a {
-    color: var(--cor-principal);
-    text-decoration: none;
-    margin-top: 10px;
+h1 {
+    max-width: 500px;
+    padding: 70px 0 30px;
+
+    font-size: 2.4rem;
+    letter-spacing: 1px;
 }
 
-#repo-list a:hover {
-    border-bottom: 2px solid var(--cor-principal);
+/* form area */
+
+.container {
+    max-width: 750px;
 }
 
-#repo-list i {
-    color: var(--cor-principal);
-    margin: 10px 0 0 15px;
+.input-box {
+    display: flex;
+}
+
+.input-box input {
+    flex: 1;
+    height: 60px;
+    padding: 0 5px 0 20px;
+
+    border: 0;
+    border-radius: 5px 0 0 5px;
+    outline-color: var(--primary-color);
+
+    font-size: 1.3rem;
+}
+
+.input-box button {
+    padding: 0 40px;
+
+    background-color: var(--primary-color);
+    outline-color: #7159C1dd;
+
+    color: #fff;
+    font-size: 1.2rem;
+
+    border: 0;
+    border-radius: 0 5px 5px 0;
+
+
+    transition: background .3s;
     cursor: pointer;
-    transition: .4s;
 }
 
-#repo-list i:hover {
-    color: rgb(206, 0, 0);
+.input-box button:hover {
+    background-color: #7159C1dd;
+}
+
+.status {
+    padding: 10px;
+    margin-bottom: 80px;
+    height: 10px;
+
+    letter-spacing: 1px;
+    color: #7159C1dd;
+}
+
+/* list area */
+
+.repositories-list {
+    padding-bottom: 8px;
+}
+
+.repositories-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 15px 20px;
+    margin-bottom: 8px;
     
+    border-radius: 5px;
+    border: 1px solid #fff;
+
+    background: #fff;
+    list-style: none;
+
+    transition: transform .5s, border .5s;
 }
 
-@media (max-width: 1000px) {
-    body {
+.repositories-list li:hover {
+    transform: translateX(5px);
+    border-color: var(--primary-color);
+}
+
+.repositories-list li a {
+    display: flex;
+    align-items: center;
+
+    text-decoration: none;
+    color: unset;
+    font-size: 1rem;
+}
+
+.repositories-list li a img {
+    width: 80px;
+    border-radius: 50%;
+}
+
+.repositories-list li a .list-content {
+    flex: 1;
+    padding-left: 20px;
+
+    text-align: justify;
+}
+
+.repositories-list li a .list-content strong {
+    display: block;
+    padding-bottom: 5px;
+
+    font-size: 1.3rem;
+}
+
+.repositories-list li i {
+    padding: 10px 10px 10px 30px;
+
+    color: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: color .5s;
+}
+
+.repositories-list li:hover i {
+    color: rgba(0, 0, 0, 0.9);
+}
+
+.repositories-list li i:hover {
+    color: red;
+}
+
+/* media queries */
+
+@media(max-width: 1080px) {
+    html {
+        font-size: 93.75%;
+    }
+}
+
+@media(max-width: 800px) {
+    html {
+        font-size: 85.5%;
+    }
+}
+
+@media(max-width: 630px) {
+    .overlay {
+        padding: 40px 50px;
+    }
+    h1 {
+        text-align: center;
+    }
+}
+
+@media(max-width: 525px) {
+    html {
+        font-size: 82.75%;
+    }
+    .overlay {
+        padding: 20px 30px;
+    }
+    .input-box input {
+        height: 50px;
+        width: 100px;
+        padding-left: 10px;
+    }
+    .input-box input::placeholder {
+        color: #FFF;
+    }
+    .input-box button {
+        padding: 0 20px;
+        font-size: 14px;
+    }
+    .status {
+        text-align: center;
+    }
+    .repositories-list li {
         flex-direction: column;
     }
-    #repo-form {
-        width: 80%;
-        margin: 0 auto 38px;
-        padding: 20px;
+    .repositories-list li a img {
+        display: none;
     }
-    #repo-form button {
-        width: 250px;
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
+    .repositories-list li {
+        padding: 15px 20px 15px 0;
     }
-    #repo-list {
-        width: 100%;
-        min-height: 61.5vh;
-        border-radius: 20px 20px 0 0;
-    }
-    #repo-list li {
-        max-width: 800px;
-    }
-}
-
-@media (max-width: 350px) {
-    #repo-form h1, #repo-form p, #repo-form .input {
-        position: relative;
-        right: 20px;
+    .repositories-list li i {
+        transform: translateY(8px);
+        color: rgba(0, 0, 0, 0.9);
     }
 }

@@ -4,26 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="icon" href="https://image.flaticon.com/icons/svg/733/733553.svg">
     <title>Lista de Repositórios</title>
 </head>
 
 <body>
-    <form id="repo-form">
-        <h1>repositoryList</h1>
-        <p>Adicione um reposotório a sua lista:</p>
-        <div class="input">
-            <i class="fas fa-paste"></i>
-            <input type="text" name="repository" placeholder="Cole aqui o link do repositório">
-        </div>
-        <button type="submit">Adicionar</button>
-    </form>
+    <div class="overlay">
+        <header>
+            <img src='./assets/logo-light.svg'>
+            <h3>RepoList</h3>
+        </header>
 
-    <ul id="repo-list">
-    </ul>
-    
-    <script src="bundle.js"></script>
+        <h1>Adicione um repositório do Github em sua lista.</h1>
+
+        <section class="container">
+            <form id="repo-form" class="input-box">
+                <input 
+                    type="text" 
+                    name="repository"
+                    placeholder="Cole aqui o link do repositório"
+                >
+                <button type="submit">Adicionar</button>
+            </form>
+
+            <div class="status"></div>
+
+            <ul id="repo-list" class="repositories-list"></ul>
+        </section>
+    </div>
+
+    <script src="./bundle.js"></script>
 </body>
 </html>

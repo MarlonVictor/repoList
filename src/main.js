@@ -4,6 +4,7 @@ class App {
     constructor() {
         this.repositories = JSON.parse(localStorage.getItem('listRepo')) || []
         this.form = document.querySelector('#repo-form')
+        this.status = document.querySelector('.status')
         this.list = document.querySelector('#repo-list')
         this.input = document.querySelector('input[name=repository]')
         this.body = document.querySelector('body')
@@ -21,7 +22,7 @@ class App {
             let loadingEl = document.createElement('span')
             loadingEl.appendChild(document.createTextNode('carregando...'))
 
-            this.form.appendChild(loadingEl)
+            this.status.appendChild(loadingEl)
 
         } else 
             document.querySelector('span').remove()
@@ -33,7 +34,7 @@ class App {
         const repoValue = this.input.value
         const repoInput = repoValue.replace('https://github.com/', '')
 
-        if(repoInput.lenght === 0)
+        if(repoInput.length === 0)
             return
 
         this.setLoading()
@@ -64,7 +65,7 @@ class App {
     showMsg(name, msg) {
         name = document.createElement('span')
         name.appendChild(document.createTextNode(msg))
-        this.form.appendChild(name)
+        this.status.appendChild(name)
 
         setTimeout(() => document.querySelector('span').remove(), 2000)
     }
@@ -77,7 +78,7 @@ class App {
             let img = document.createElement('img')
             img.setAttribute('src', repo.avatar_url)
 
-            let title = document.createElement('b')
+            let title = document.createElement('strong')
             title.appendChild(document.createTextNode(repo.name))
 
             let description = document.createElement('p')
@@ -86,16 +87,20 @@ class App {
             let link = document.createElement('a')
             link.setAttribute('href', repo.html_url)
             link.setAttribute('target', '_blank')
-            link.appendChild(document.createTextNode('Acessar'))
 
             let exclude = document.createElement('i')
             exclude.setAttribute('class', 'fas fa-trash-alt')
 
+            let container = document.createElement('div')
+            container.setAttribute('class', 'list-content')
+
             let listItem = document.createElement('li')
-            listItem.appendChild(img)
-            listItem.appendChild(title)
-            listItem.appendChild(description)
+
             listItem.appendChild(link)
+            link.appendChild(img)
+            link.appendChild(container)
+            container.appendChild(title)
+            container.appendChild(description)
             listItem.appendChild(exclude)
 
             this.list.appendChild(listItem)
@@ -106,7 +111,7 @@ class App {
             listItem.addEventListener('click', e => {
                 if(e.target.classList.contains('fas')) {
                     this.excludeRepo(pos)
-                    this.showMsg('deleted', 'O link foi excluido com sucesso')
+                    this.showMsg('deleted', 'O link foi excluído com sucesso')
                 }
             })
         })
