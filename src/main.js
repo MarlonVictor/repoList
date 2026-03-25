@@ -1,131 +1,148 @@
-import api from './api'
+import api from "./api";
 
 class App {
-    constructor() {
-        this.repositories = JSON.parse(localStorage.getItem('listRepo')) || []
-        this.form = document.querySelector('#repo-form')
-        this.status = document.querySelector('.status')
-        this.list = document.querySelector('#repo-list')
-        this.input = document.querySelector('input[name=repository]')
-        this.body = document.querySelector('body')
+  constructor() {
+    this.repositories = JSON.parse(localStorage.getItem("listRepo")) || [];
+    this.form = document.querySelector("#repo-form");
+    this.status = document.querySelector(".status");
+    this.list = document.querySelector("#repo-list");
+    this.input = document.querySelector("input[name=repository]");
+    this.body = document.querySelector("body");
 
-        this.register()
+    this.register();
+  }
+
+  register() {
+    this.form.onsubmit = (event) => this.addRepository(event);
+    this.body.onload = this.render();
+  }
+
+  setLoading(loading = true) {
+    if (loading) {
+      let loadingEl = document.createElement("span");
+      loadingEl.appendChild(document.createTextNode("carregando..."));
+      loadingEl.style.animation = "pulse 1s infinite";
+      loadingEl.style.display = "inline-block";
+
+      this.status.appendChild(loadingEl);
+    } else {
+      const span = document.querySelector("span");
+      if (span) span.remove();
+    }
+  }
+
+  async addRepository(event) {
+    event.preventDefault();
+
+    const repoValue = this.input.value;
+    const repoInput = repoValue.replace("https://github.com/", "");
+
+    if (repoInput.length === 0) return;
+
+    this.setLoading();
+
+    try {
+      const response = await api.get(`/repos/${repoInput}`);
+
+      const {
+        name,
+        description,
+        html_url,
+        owner: { avatar_url },
+      } = response.data;
+
+      this.repositories.push({
+        name,
+        description,
+        avatar_url,
+        html_url,
+      });
+
+      this.input.value = "";
+      this.showMsg("concluded", "O link foi salvo");
+      this.render();
+    } catch (err) {
+      this.showMsg("error", "O repositório não existe");
     }
 
-    register() {
-        this.form.onsubmit = event => this.addRepository(event) 
-        this.body.onload = this.render()
-    }
+    this.setLoading(false);
+  }
 
-    setLoading(loading = true) {
-        if(loading) {
-            let loadingEl = document.createElement('span')
-            loadingEl.appendChild(document.createTextNode('carregando...'))
+  showMsg(name, msg) {
+    name = document.createElement("span");
+    name.appendChild(document.createTextNode(msg));
+    this.status.appendChild(name);
 
-            this.status.appendChild(loadingEl)
+    setTimeout(() => {
+      const span = document.querySelector("span");
+      if (span) {
+        span.style.animation = "slideInLeft 0.5s ease-out forwards reverse";
+        setTimeout(() => span.remove(), 300);
+      }
+    }, 2000);
+  }
 
-        } else 
-            document.querySelector('span').remove()
-    }
+  render() {
+    this.saveToStorage();
+    this.list.innerHTML = "";
 
-    async addRepository(event) {
-        event.preventDefault()
+    this.repositories.forEach((repo) => {
+      let img = document.createElement("img");
+      img.setAttribute("src", repo.avatar_url);
 
-        const repoValue = this.input.value
-        const repoInput = repoValue.replace('https://github.com/', '')
+      let title = document.createElement("strong");
+      title.appendChild(document.createTextNode(repo.name));
 
-        if(repoInput.length === 0)
-            return
+      let description = document.createElement("p");
+      description.appendChild(document.createTextNode(repo.description));
 
-        this.setLoading()
+      let link = document.createElement("a");
+      link.setAttribute("href", repo.html_url);
+      link.setAttribute("target", "_blank");
 
-        try {
-            const response = await api.get(`/repos/${repoInput}`)
+      let exclude = document.createElement("i");
+      exclude.setAttribute("class", "fas fa-trash-alt");
 
-            const { name, description, html_url, owner: {avatar_url}} = response.data
+      let container = document.createElement("div");
+      container.setAttribute("class", "list-content");
 
-            this.repositories.push({
-                name,
-                description,
-                avatar_url,
-                html_url
-            })
+      let listItem = document.createElement("li");
+      listItem.style.opacity = "0";
+      listItem.style.animation = "fadeInUp 0.6s ease-out forwards";
 
-            this.input.value = ''
-            this.showMsg('concluded', 'O link foi salvo')
-            this.render()
+      listItem.appendChild(link);
+      link.appendChild(img);
+      link.appendChild(container);
+      container.appendChild(title);
+      container.appendChild(description);
+      listItem.appendChild(exclude);
 
-        } catch (err) {
-            this.showMsg('error', 'O repositório não existe')
+      this.list.appendChild(listItem);
+
+      // btn delete
+      let pos = this.repositories.indexOf(repo);
+
+      listItem.addEventListener("click", (e) => {
+        if (e.target.classList.contains("fas")) {
+          listItem.style.animation = "fadeInUp 0.4s ease-in forwards reverse";
+          setTimeout(() => {
+            this.excludeRepo(pos);
+            this.showMsg("deleted", "O link foi excluído com sucesso");
+          }, 400);
         }
-        
-        this.setLoading(false)
-    }
+      });
+    });
+  }
 
-    showMsg(name, msg) {
-        name = document.createElement('span')
-        name.appendChild(document.createTextNode(msg))
-        this.status.appendChild(name)
+  excludeRepo(pos) {
+    this.repositories.splice(pos, 1);
+    this.render();
+    this.saveToStorage();
+  }
 
-        setTimeout(() => document.querySelector('span').remove(), 2000)
-    }
-
-    render() {
-        this.saveToStorage()
-        this.list.innerHTML = ''
-
-        this.repositories.forEach(repo => {
-            let img = document.createElement('img')
-            img.setAttribute('src', repo.avatar_url)
-
-            let title = document.createElement('strong')
-            title.appendChild(document.createTextNode(repo.name))
-
-            let description = document.createElement('p')
-            description.appendChild(document.createTextNode(repo.description))
-
-            let link = document.createElement('a')
-            link.setAttribute('href', repo.html_url)
-            link.setAttribute('target', '_blank')
-
-            let exclude = document.createElement('i')
-            exclude.setAttribute('class', 'fas fa-trash-alt')
-
-            let container = document.createElement('div')
-            container.setAttribute('class', 'list-content')
-
-            let listItem = document.createElement('li')
-
-            listItem.appendChild(link)
-            link.appendChild(img)
-            link.appendChild(container)
-            container.appendChild(title)
-            container.appendChild(description)
-            listItem.appendChild(exclude)
-
-            this.list.appendChild(listItem)
-
-            // btn delete
-            let pos = this.repositories.indexOf(repo)
-            
-            listItem.addEventListener('click', e => {
-                if(e.target.classList.contains('fas')) {
-                    this.excludeRepo(pos)
-                    this.showMsg('deleted', 'O link foi excluído com sucesso')
-                }
-            })
-        })
-    }
-
-    excludeRepo(pos) {
-        this.repositories.splice(pos, 1)
-        this.render()
-        this.saveToStorage()
-    }
-
-    saveToStorage() {
-        localStorage.setItem('listRepo', JSON.stringify(this.repositories))
-    }
+  saveToStorage() {
+    localStorage.setItem("listRepo", JSON.stringify(this.repositories));
+  }
 }
 
-new App()
+new App();
