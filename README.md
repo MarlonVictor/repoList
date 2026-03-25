@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://image.flaticon.com/icons/svg/733/733553.svg" width="150px">
+  <img src="https://repositorieslist.netlify.app/assets/github.svg" width="150px">
 </p>
 
 <br>
@@ -27,7 +27,7 @@ A idéia da aplicação é poder salvar links de repositórios ao localStore par
 </p>
 
 ## Acesse
-* Link do projeto: [Repositories List](https://repositorieslist.netlify.app/public/)  
+* Link do projeto: [Repositories List](https://repositorieslist.netlify.app/)  
 
 ## Como Rodar
 
